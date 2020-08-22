@@ -1,4 +1,4 @@
-# U-Boot tools for Linstation Armada370
+# U-Boot tools for Linkstation Armada370
  * Tools for splitting an joining the U-boot header on Armada 370 based boards.  
  * Tool for for recovering via UART.  
 
