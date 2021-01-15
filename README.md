@@ -30,3 +30,25 @@ mv tmp/payload tmp/payload.orig
 `./kwbimage -x -i uboot/u-boot.buffalo-1.34_voodoo -o tmp/`  
 `./mvebuimg -v 1 create -b tmp/binary.0 -o uboot/uboot-voodoo.spi spi tmp/payload.orig`  
 `rm tmp/*`
+
+## doimage:
+*mvebuimg* may create a non working bootloader, in this case we can use *doimage* which is able
+to recreate the original bootloader (exact copy). 
+
+With *doimage* first we need to prepend 12 bytes to the *binary.0* header, for some reason they're
+lost when *kwbimage* splits the bootloader.
+
+In the Buffalo LS421DE, these bytes are: **020000005B00000068000000**
+
+ * Command example for using doimage with u-boot 1.34:
+```
+echo -ne \\x02\\x00\\x00\\x00\\x5B\\x00\\x00\\x00\\x68\\x00\\x00\\x00 > binary.1
+cat binary.0 >> binary.1
+
+./doimage -T flash -D 0x600000 -E 0x6A0000 -G binary.1 payload u-boot.bin
+```
+
+ * For 1.84:
+```
+./doimage -T flash -D 0x0 -E 0x0 -G binary.1 payload u-boot.bin
+```
