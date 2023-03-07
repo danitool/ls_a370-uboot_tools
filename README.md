@@ -38,7 +38,8 @@ to recreate the original bootloader (exact copy).
 With *doimage* first we need to prepend 12 bytes to the *binary.0* header, for some reason they're
 lost when *kwbimage* splits the bootloader.
 
-In the Buffalo LS421DE, these bytes are: **020000005B00000068000000**
+In the Buffalo LS421DE, these bytes are: **020000005B00000068000000** (offsets 0x24-0x2f)  
+In the Buffalo LS220DE, these bytes are: **020000005B00000000000000** (offsets 0x24-0x2f)
 
  * Command example for using doimage with u-boot 1.34:
 ```
@@ -48,7 +49,7 @@ cat binary.0 >> binary.1
 ./doimage -T flash -D 0x600000 -E 0x6A0000 -G binary.1 payload u-boot.bin
 ```
 
- * For 1.84:
+ * For LS421DE 1.84, LS220DE 0.38:
 ```
 ./doimage -T flash -D 0x0 -E 0x0 -G binary.1 payload u-boot.bin
 ```
